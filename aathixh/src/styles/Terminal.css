@@ -1,0 +1,184 @@
+.terminal {
+  width: 100%;
+  height: 100%;
+  background: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: "Fira Code", "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1000;
+}
+
+.terminal-header {
+  background: #2d2d2d;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #404040;
+  user-select: none;
+}
+
+.terminal-buttons {
+  display: flex;
+  gap: 8px;
+  margin-right: 16px;
+}
+
+.terminal-button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.terminal-button.close {
+  background: #ff5f57;
+}
+
+.terminal-button.minimize {
+  background: #ffbd2e;
+}
+
+.terminal-button.maximize {
+  background: #28ca42;
+}
+
+.terminal-button:hover {
+  opacity: 0.4;
+}
+
+.terminal-title {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.terminal-body {
+  flex: 1;
+  padding: 16px;
+  background: #0d1117;
+  color: #e6edf3;
+  overflow-y: auto;
+  cursor: text;
+}
+
+.command-block {
+  margin-bottom: 8px;
+}
+
+.command-input {
+  display: flex;
+  margin-bottom: 4px;
+}
+
+.prompt {
+  color: #7c3aed;
+  font-weight: bold;
+  user-select: none;
+}
+
+.input-text {
+  color: #e6edf3;
+  margin-left: 4px;
+}
+
+.command-output {
+  margin-left: 0;
+  white-space: pre-wrap;
+}
+
+.output-line {
+  margin-bottom: 2px;
+  color: #e6edf3;
+}
+
+.output-line:empty {
+  height: 1em;
+}
+
+.input-form {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.terminal-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e6edf3;
+  font-family: inherit;
+  font-size: inherit;
+  flex: 1;
+  margin-left: 4px;
+  caret-color: #7c3aed;
+}
+
+.terminal-input::selection {
+  background: #264f78;
+}
+
+.typing-indicator {
+  margin: 8px 0;
+}
+
+.typing-dots {
+  color: #7c3aed;
+  font-weight: bold;
+}
+
+/* Scrollbar styles */
+.terminal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminal-body::-webkit-scrollbar-track {
+  background: #161b22;
+}
+
+.terminal-body::-webkit-scrollbar-thumb {
+  background: #30363d;
+  border-radius: 4px;
+}
+
+.terminal-body::-webkit-scrollbar-thumb:hover {
+  background: #484f58;
+}
+
+/* Special text colors */
+.output-line:contains("•") {
+  color: #7dd3fc;
+}
+
+/* Animation for typing dots */
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.typing-dots {
+  animation: blink 1s infinite;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .terminal {
+    font-size: 12px;
+  }
+
+  .terminal-body {
+    padding: 12px;
+  }
+}
