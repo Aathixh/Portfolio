@@ -23,46 +23,37 @@ export const fileSystem: FileSystem = {
               projects: {
                 type: "directory",
                 children: {
-                  "portfolio.md": {
+                  "door-automation.md": {
                     type: "file",
-                    content: "Interactive Portfolio using React and Three.js",
+                    content:
+                      "Door Automation (Sep 2024 - Jul 2025)\nTeam Size: 3\nKey Skills: React Native, Mobile Application Development, UI Development, HTTP\nGitHub: https://github.com/Aathixh/ZenLock\n\nDeveloped a React Native application for door automation helping differently-abled individuals. Enables remote door control via smartphone integration with microcontroller. Features user-centered design and intelligent setup process. Demonstrates expertise in IoT, React Native and Wi-Fi management.",
                   },
-                  "ecommerce.md": {
+                  "efdin.md": {
                     type: "file",
-                    content: "Full-stack E-commerce platform with MERN stack",
+                    content:
+                      "EFDIN (Apr 2024 - May 2024)\nTeam Size: 4\nKey Skills: PHP, Laravel, SQL, MVC, CSS, HTML5\nGitHub: https://github.com/Aathixh/EL\n\nOnline platform built during DEFINE'24 Hackathon at MBCET focused on combating food wastage through surplus food redistribution.",
                   },
-                  "task-manager.md": {
+                  "onroutex.md": {
                     type: "file",
-                    content: "Real-time collaborative task management app",
+                    content:
+                      "OnRouteX - Real Time Bus Tracking System (Sep 2023 - Jan 2024)\nTeam Size: 5\nKey Skills: PHP, Laravel, SQL, HTTP\nGitHub: https://github.com/Aathixh/TrackBus\n\nA real-time bus tracking and booking system designed to simplify transit management.",
                   },
                 },
               },
               skills: {
                 type: "directory",
                 children: {
-                  "frontend.txt": {
+                  "skills.txt": {
                     type: "file",
-                    content: "React, TypeScript, JavaScript, HTML5, CSS3",
-                  },
-                  "backend.txt": {
-                    type: "file",
-                    content: "Node.js, Express.js, Python, Django",
-                  },
-                  "database.txt": {
-                    type: "file",
-                    content: "MongoDB, PostgreSQL, MySQL",
+                    content:
+                      "• React.js\n• React Native\n• TypeScript\n• JavaScript\n• HTML5\n• CSS3\n• PHP\n• Laravel\n• Python\n• Java\n• Supabase\n• Git\n• GitHub\n• MySQL\n• SQL",
                   },
                 },
-              },
-              "about.txt": {
-                type: "file",
-                content:
-                  "Full Stack Developer passionate about creating innovative solutions",
               },
               "contact.txt": {
                 type: "file",
                 content:
-                  "Email: your.email@example.com\nLinkedIn: linkedin.com/in/yourprofile",
+                  "• Email: aathishrv@gmail.com\n• LinkedIn: linkedin.com/in/aathishrviswam",
               },
             },
           },
@@ -78,7 +69,6 @@ export const fileSystem: FileSystem = {
   },
 };
 
-// Navigation utilities
 export class FileSystemNavigator {
   private fileSystem: FileSystem;
 
@@ -86,11 +76,6 @@ export class FileSystemNavigator {
     this.fileSystem = fileSystem;
   }
 
-  /**
-   * Navigate to a specific path in the file system
-   * @param path - The path to navigate to
-   * @returns The FileSystemItem at the path, or null if not found
-   */
   navigatePath = (path: string): FileSystemItem | null => {
     if (path === "/") return this.fileSystem["/"];
 
@@ -108,11 +93,6 @@ export class FileSystemNavigator {
     return current;
   };
 
-  /**
-   * Get the contents of a directory
-   * @param path - The directory path
-   * @returns Array of file/directory names, with directories suffixed with '/'
-   */
   getDirectoryContents = (path: string): string[] => {
     const dir = this.navigatePath(path);
     if (!dir || dir.type !== "directory") return [];
@@ -122,52 +102,26 @@ export class FileSystemNavigator {
     });
   };
 
-  /**
-   * Check if a path exists
-   * @param path - The path to check
-   * @returns true if the path exists, false otherwise
-   */
   pathExists = (path: string): boolean => {
     return this.navigatePath(path) !== null;
   };
 
-  /**
-   * Check if a path is a directory
-   * @param path - The path to check
-   * @returns true if the path is a directory, false otherwise
-   */
   isDirectory = (path: string): boolean => {
     const item = this.navigatePath(path);
     return item !== null && item.type === "directory";
   };
 
-  /**
-   * Check if a path is a file
-   * @param path - The path to check
-   * @returns true if the path is a file, false otherwise
-   */
   isFile = (path: string): boolean => {
     const item = this.navigatePath(path);
     return item !== null && item.type === "file";
   };
 
-  /**
-   * Get file content
-   * @param path - The file path
-   * @returns The file content or null if not found/not a file
-   */
   getFileContent = (path: string): string | null => {
     const item = this.navigatePath(path);
     if (!item || item.type !== "file") return null;
     return item.content || null;
   };
 
-  /**
-   * Resolve a relative path to an absolute path
-   * @param currentPath - The current working directory
-   * @param relativePath - The relative path to resolve
-   * @returns The absolute path
-   */
   resolvePath = (currentPath: string, relativePath: string): string => {
     if (relativePath.startsWith("/")) {
       return relativePath;
@@ -182,11 +136,6 @@ export class FileSystemNavigator {
     return `${currentPath}/${relativePath}`.replace("//", "/");
   };
 
-  /**
-   * Get parent directory path
-   * @param path - The current path
-   * @returns The parent directory path
-   */
   getParentPath = (path: string): string => {
     if (path === "/") return "/";
     const parts = path.split("/").filter(Boolean);
@@ -194,11 +143,6 @@ export class FileSystemNavigator {
     return parts.length > 0 ? `/${parts.join("/")}` : "/";
   };
 
-  /**
-   * Get the basename of a path (last component)
-   * @param path - The path
-   * @returns The basename
-   */
   getBasename = (path: string): string => {
     if (path === "/") return "/";
     const parts = path.split("/").filter(Boolean);
@@ -206,10 +150,8 @@ export class FileSystemNavigator {
   };
 }
 
-// Create a default instance for easy import
 export const fsNavigator = new FileSystemNavigator(fileSystem);
 
-// Shell command handlers
 export class ShellCommandHandler {
   private navigator: FileSystemNavigator;
 
@@ -217,12 +159,6 @@ export class ShellCommandHandler {
     this.navigator = navigator;
   }
 
-  /**
-   * Handle the 'ls' command
-   * @param args - Command arguments
-   * @param currentPath - Current working directory
-   * @returns Command output lines
-   */
   handleLs = (args: string[], currentPath: string): string[] => {
     const targetPath = args[0]
       ? this.navigator.resolvePath(currentPath, args[0])
@@ -243,13 +179,6 @@ export class ShellCommandHandler {
     return contents;
   };
 
-  /**
-   * Handle the 'cd' command
-   * @param args - Command arguments
-   * @param currentPath - Current working directory
-   * @param setCurrentPath - Function to update current path
-   * @returns Command output lines
-   */
   handleCd = (
     args: string[],
     currentPath: string,
@@ -280,12 +209,6 @@ export class ShellCommandHandler {
     return [];
   };
 
-  /**
-   * Handle the 'cat' command
-   * @param args - Command arguments
-   * @param currentPath - Current working directory
-   * @returns Command output lines
-   */
   handleCat = (args: string[], currentPath: string): string[] => {
     if (!args[0]) {
       return ["cat: missing file name"];
@@ -305,32 +228,14 @@ export class ShellCommandHandler {
     return content ? content.split("\n") : ["(empty file)"];
   };
 
-  /**
-   * Handle the 'echo' command
-   * @param args - Command arguments
-   * @returns Command output lines
-   */
   handleEcho = (args: string[]): string[] => {
     return [args.join(" ")];
   };
 
-  /**
-   * Handle the 'pwd' command
-   * @param currentPath - Current working directory
-   * @returns Command output lines
-   */
   handlePwd = (currentPath: string): string[] => {
     return [currentPath];
   };
 
-  /**
-   * Handle any shell command
-   * @param command - The command name
-   * @param args - Command arguments
-   * @param currentPath - Current working directory
-   * @param setCurrentPath - Function to update current path
-   * @returns Command output lines
-   */
   handleShellCommand = (
     command: string,
     args: string[],
@@ -354,5 +259,4 @@ export class ShellCommandHandler {
   };
 }
 
-// Create a default instance for easy import
 export const shellHandler = new ShellCommandHandler(fsNavigator);

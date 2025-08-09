@@ -8,7 +8,7 @@ interface Command {
   output: string[];
   isComplete?: boolean;
   typedOutput?: string[];
-  prompt?: string; // Store the prompt when command was executed
+  prompt?: string;
 }
 
 const Terminal: React.FC = () => {
@@ -22,26 +22,22 @@ const Terminal: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const typingTimeoutRef = useRef<number | null>(null);
 
-  // Get all available commands for autocompletion
   const getAllCommands = () => {
     const shellCommands = ["ls", "cd", "cat", "echo", "pwd"];
     const portfolioCommands = CommandHandler.getCommandNames().filter(
       (cmd) => cmd !== "clear"
-    ); // Exclude clear from portfolio commands
+    );
     const systemCommands = ["date", "whoami", "clear"];
 
-    // Combine all commands and remove duplicates
     const allCommands = [
       ...shellCommands,
       ...portfolioCommands,
       ...systemCommands,
     ];
-    return [...new Set(allCommands)]; // Remove duplicates using Set
+    return [...new Set(allCommands)];
   };
 
-  // Create a function to get directory contents (workaround for private access)
   const getDirectoryContents = (path: string): string[] => {
-    // Use the shell handler's ls command to get directory contents
     const output = shellHandler.handleShellCommand("ls", [], path, () => {});
     if (
       output.length === 1 &&
@@ -52,7 +48,6 @@ const Terminal: React.FC = () => {
     return output;
   };
 
-  // Autocompletion function
   const handleTabCompletion = () => {
     const trimmedInput = currentInput.trim();
     if (!trimmedInput) return;
@@ -61,7 +56,6 @@ const Terminal: React.FC = () => {
     const currentWord = words[words.length - 1];
 
     if (words.length === 1) {
-      // Complete command names
       const allCommands = getAllCommands();
       const matches = allCommands.filter((cmd) =>
         cmd.toLowerCase().startsWith(currentWord.toLowerCase())
@@ -70,7 +64,6 @@ const Terminal: React.FC = () => {
       if (matches.length === 1) {
         setCurrentInput(matches[0] + " ");
       } else if (matches.length > 1) {
-        // Find common prefix for partial completion
         const commonPrefix = matches.reduce((prefix, match) => {
           let common = "";
           for (let i = 0; i < Math.min(prefix.length, match.length); i++) {
@@ -83,11 +76,9 @@ const Terminal: React.FC = () => {
           return common;
         });
 
-        // If we can complete more characters, do partial completion
         if (commonPrefix.length > currentWord.length) {
           setCurrentInput(commonPrefix);
         } else {
-          // Show available options in terminal output without command prompt
           const newCommand: Command = {
             input: "", // Empty input so no prompt is shown
             output: ["Available completions:", ...matches.sort()],
@@ -98,10 +89,9 @@ const Terminal: React.FC = () => {
         }
       }
     } else if (words[0] === "cd" && words.length === 2) {
-      // Complete directory names for cd command
       const directories = getDirectoryContents(currentPath)
         .filter((item) => item.endsWith("/"))
-        .map((dir) => dir.slice(0, -1)); // Remove trailing slash
+        .map((dir) => dir.slice(0, -1));
 
       const matches = directories.filter((dir) =>
         dir.toLowerCase().startsWith(currentWord.toLowerCase())
@@ -111,7 +101,6 @@ const Terminal: React.FC = () => {
         words[words.length - 1] = matches[0];
         setCurrentInput(words.join(" ") + " ");
       } else if (matches.length > 1) {
-        // Find common prefix for partial completion
         const commonPrefix = matches.reduce((prefix, match) => {
           let common = "";
           for (let i = 0; i < Math.min(prefix.length, match.length); i++) {
@@ -124,12 +113,10 @@ const Terminal: React.FC = () => {
           return common;
         });
 
-        // If we can complete more characters, do partial completion
         if (commonPrefix.length > currentWord.length) {
           words[words.length - 1] = commonPrefix;
           setCurrentInput(words.join(" "));
         } else {
-          // Show available options
           const newCommand: Command = {
             input: "",
             output: ["Available directories:", ...matches.sort()],
@@ -140,7 +127,6 @@ const Terminal: React.FC = () => {
         }
       }
     } else if (words[0] === "cat" && words.length === 2) {
-      // Complete file names for cat command
       const files = getDirectoryContents(currentPath).filter(
         (item) => !item.endsWith("/")
       );
@@ -153,7 +139,6 @@ const Terminal: React.FC = () => {
         words[words.length - 1] = matches[0];
         setCurrentInput(words.join(" ") + " ");
       } else if (matches.length > 1) {
-        // Find common prefix for partial completion
         const commonPrefix = matches.reduce((prefix, match) => {
           let common = "";
           for (let i = 0; i < Math.min(prefix.length, match.length); i++) {
@@ -166,12 +151,10 @@ const Terminal: React.FC = () => {
           return common;
         });
 
-        // If we can complete more characters, do partial completion
         if (commonPrefix.length > currentWord.length) {
           words[words.length - 1] = commonPrefix;
           setCurrentInput(words.join(" "));
         } else {
-          // Show available options
           const newCommand: Command = {
             input: "",
             output: ["Available files:", ...matches.sort()],
@@ -184,7 +167,6 @@ const Terminal: React.FC = () => {
     }
   };
 
-  // Handle keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Tab") {
       e.preventDefault();
@@ -212,7 +194,6 @@ const Terminal: React.FC = () => {
     }
   };
 
-  // Typing effect function with proper line-by-line animation
   const startTypingEffect = useCallback(
     (commandIndex: number, commandOutput: string[]) => {
       console.log("Starting typing effect for command index:", commandIndex);
@@ -258,9 +239,8 @@ const Terminal: React.FC = () => {
               commandOutput.length
             );
 
-            typingTimeoutRef.current = window.setTimeout(typeLine, 80); // 80ms delay between lines
+            typingTimeoutRef.current = window.setTimeout(typeLine, 80);
           } else {
-            // Typing complete
             console.log("Typing complete for command:", commandIndex);
             currentCommand.isComplete = true;
             newHistory[commandIndex] = currentCommand;
@@ -271,13 +251,11 @@ const Terminal: React.FC = () => {
         });
       };
 
-      // Start typing with initial delay
       typingTimeoutRef.current = window.setTimeout(typeLine, 100);
     },
     []
   );
 
-  // Stop typing effect
   const stopTypingEffect = () => {
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current);
@@ -295,7 +273,6 @@ const Terminal: React.FC = () => {
     }
   };
 
-  // Handle command execution
   const handleCommand = (command: string) => {
     console.log("Handling command:", command);
     const [cmd, ...args] = command.toLowerCase().trim().split(" ");
@@ -308,7 +285,6 @@ const Terminal: React.FC = () => {
 
     let output: string[] = [];
 
-    // Check if it's a shell command (handled by filesystem module)
     if (["ls", "cd", "cat", "echo", "pwd"].includes(cmd)) {
       console.log("Processing shell command:", cmd, "with args:", args);
       output = shellHandler.handleShellCommand(
@@ -322,7 +298,6 @@ const Terminal: React.FC = () => {
     } else if (cmd === "whoami") {
       output = ["aathish"];
     } else {
-      // Check predefined commands using CommandHandler
       const commandOutput = CommandHandler.handleCommand(cmd);
       if (commandOutput) {
         output = commandOutput;
@@ -341,17 +316,15 @@ const Terminal: React.FC = () => {
       output,
       isComplete: false,
       typedOutput: [],
-      prompt: getPrompt(), // Store current prompt with the command
+      prompt: getPrompt(),
     };
 
     const newIndex = history.length;
     setHistory((prev) => [...prev, newCommand]);
 
-    // Start typing effect if output exists
     if (output.length > 0) {
       setTimeout(() => startTypingEffect(newIndex, output), 50);
     } else {
-      // Mark as complete immediately if no output
       setTimeout(() => {
         setHistory((prev) =>
           prev.map((cmd, idx) =>
@@ -362,13 +335,12 @@ const Terminal: React.FC = () => {
     }
   };
 
-  // Initialize with welcome message
   useEffect(() => {
     setHistory([
       {
         input: "",
         output: [
-          "Welcome to Aathish's Interactive Portfolio Terminal! 🚀",
+          "Welcome to Aathish's Interactive Portfolio Terminal!",
           "",
           "This is a fully functional shell-like interface.",
           "You can navigate through my portfolio using standard Unix commands.",
@@ -379,11 +351,11 @@ const Terminal: React.FC = () => {
           "• ls       - List contents of current directory",
           "• cd projects - Navigate to my projects folder",
           "",
-          "Happy exploring! 🎯",
+          "Happy exploring!",
         ],
         isComplete: true,
         typedOutput: [
-          "Welcome to Aathish's Interactive Portfolio Terminal! 🚀",
+          "Welcome to Aathish's Interactive Portfolio Terminal!",
           "",
           "This is a fully functional shell-like interface.",
           "You can navigate through my portfolio using standard Unix commands.",
@@ -394,16 +366,14 @@ const Terminal: React.FC = () => {
           "• ls       - List contents of current directory",
           "• cd projects - Navigate to my projects folder",
           "",
-          "Happy exploring! 🎯",
+          "Happy exploring!",
         ],
       },
     ]);
   }, []);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     if (terminalRef.current) {
-      // Use requestAnimationFrame to ensure DOM has updated
       requestAnimationFrame(() => {
         if (terminalRef.current) {
           terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
@@ -412,18 +382,16 @@ const Terminal: React.FC = () => {
     }
   }, [history]);
 
-  // Initial scroll to bottom after mount
   useEffect(() => {
     const timer = setTimeout(() => {
       if (terminalRef.current) {
-        terminalRef.current.scrollTop = 0; // Reset scroll to top initially
+        terminalRef.current.scrollTop = 0;
       }
     }, 100);
 
     return () => clearTimeout(timer);
   }, []);
 
-  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
       if (typingTimeoutRef.current) {
@@ -436,11 +404,10 @@ const Terminal: React.FC = () => {
     e.preventDefault();
     console.log("Form submitted with input:", currentInput);
     if (currentInput.trim()) {
-      // Add to command history
       setCommandHistory((prev) => [...prev, currentInput.trim()]);
-      setHistoryIndex(-1); // Reset history index
+      setHistoryIndex(-1);
 
-      stopTypingEffect(); // Stop any ongoing typing
+      stopTypingEffect();
       handleCommand(currentInput.trim());
       setCurrentInput("");
     }

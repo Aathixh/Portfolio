@@ -19,7 +19,7 @@ import {
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 import "../styles/App.css";
 import BandTexture from "../../public/assets/@Aathixh.png";
-import AathishImage from "../../public/assets/Aathish (11).png";
+import AathishImage from "../../public/assets/Aathish (19).png";
 import Terminal from "../components/Terminal";
 
 extend({ MeshLineGeometry, MeshLineMaterial });
@@ -29,7 +29,6 @@ useGLTF.preload(
 useTexture.preload(BandTexture);
 
 export default function App() {
-  // const { debug } = useControls({ debug: false });
   return (
     <div className="app">
       <div className="canvas-container">
@@ -117,10 +116,13 @@ function Band({
   const [dragged, drag] = useState<THREE.Vector3 | false>(false);
   const [hovered, hover] = useState(false);
 
-  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]) // prettier-ignore
-  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]) // prettier-ignore
-  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]) // prettier-ignore
-  useSphericalJoint(j3, card, [[0, 0, 0], [0, 1.45, 0]]) // prettier-ignore
+  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
+  useSphericalJoint(j3, card, [
+    [0, 0, 0],
+    [0, 1.45, 0],
+  ]);
 
   useEffect(() => {
     if (hovered) {
@@ -142,7 +144,6 @@ function Band({
       });
     }
     if (fixed.current) {
-      // Fix most of the jitter when over pulling the card
       [j1, j2].forEach((ref) => {
         if (!ref.current.lerped)
           ref.current.lerped = new THREE.Vector3().copy(
@@ -175,17 +176,14 @@ function Band({
   curve.curveType = "chordal";
   bandTexture.wrapS = bandTexture.wrapT = THREE.RepeatWrapping;
 
-  // Fix card texture orientation
   cardTexture.flipY = false;
   cardTexture.wrapS = cardTexture.wrapT = THREE.ClampToEdgeWrapping;
 
-  // Adjust texture rotation and scaling
-  cardTexture.rotation = 0; // No rotation - try this first
-  cardTexture.center.set(0.5, 0.5); // Set rotation center
+  cardTexture.rotation = 0;
+  cardTexture.center.set(0.5, 0.5);
 
-  // Scale texture to fit the card properly - make entire image visible
-  cardTexture.repeat.set(0.8, 0.8); // Scale down to 80% to ensure full visibility
-  cardTexture.offset.set(0.1, 0.1); // Center the scaled texture
+  cardTexture.repeat.set(0.8, 0.8);
+  cardTexture.offset.set(0.1, 0.1);
 
   return (
     <>
