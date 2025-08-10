@@ -23,20 +23,20 @@ export const fileSystem: FileSystem = {
               projects: {
                 type: "directory",
                 children: {
-                  "door-automation.md": {
+                  "zenlock.md": {
                     type: "file",
                     content:
-                      "Door Automation (Sep 2024 - Jul 2025)\nTeam Size: 3\nKey Skills: React Native, Mobile Application Development, UI Development, HTTP\nGitHub: https://github.com/Aathixh/ZenLock\n\nDeveloped a React Native application for door automation helping differently-abled individuals. Enables remote door control via smartphone integration with microcontroller. Features user-centered design and intelligent setup process. Demonstrates expertise in IoT, React Native and Wi-Fi management.",
+                      "ZenLock - Door Automation System (Sep 2024 - Jul 2025)\nTeam Size: 3\nKey Skills: React Native, Mobile Application Development, UI Development, HTTP\nGitHub: https://github.com/Aathixh/ZenLock\n\nDeveloped a React Native application for door automation helping differently-abled individuals. Enables remote door control via smartphone integration with microcontroller. Features user-centered design and intelligent setup process. Demonstrates expertise in IoT, React Native and Wi-Fi management.",
                   },
                   "efdin.md": {
                     type: "file",
                     content:
-                      "EFDIN (Apr 2024 - May 2024)\nTeam Size: 4\nKey Skills: PHP, Laravel, SQL, MVC, CSS, HTML5\nGitHub: https://github.com/Aathixh/EL\n\nOnline platform built during DEFINE'24 Hackathon at MBCET focused on combating food wastage through surplus food redistribution.",
+                      "EFDIN - Food Wastage Reduction Platform (Apr 2024 - May 2024)\nTeam Size: 4\nKey Skills: PHP, Laravel, SQL, MVC, CSS, HTML5\nGitHub: https://github.com/Aathixh/EL\n\nOnline platform built during DEFINE'24 Hackathon at MBCET focused on combating food wastage through surplus food redistribution.",
                   },
                   "onroutex.md": {
                     type: "file",
                     content:
-                      "OnRouteX - Real Time Bus Tracking System (Sep 2023 - Jan 2024)\nTeam Size: 5\nKey Skills: PHP, Laravel, SQL, HTTP\nGitHub: https://github.com/Aathixh/TrackBus\n\nA real-time bus tracking and booking system designed to simplify transit management.",
+                      "OnRouteX - Real Time Bus Tracking System (Sep 2023 - Jan 2024)\nTeam Size: 6\nKey Skills: PHP, Laravel, SQL, HTTP\nGitHub: https://github.com/Aathixh/TrackBus\n\nA real-time bus tracking and booking system designed to simplify transit management.Project was selected as a finalist in Smart India Hackathon 2023.",
                   },
                 },
               },
